@@ -3,7 +3,7 @@
 ![screenshot](https://github.com/Samuel-Bowden/xdrip-stats/assets/91887909/8ad6b882-d679-4b3e-9624-e62e5c75aa90)
 
 
-Custom module to display live blood glucose readings from [xDrip+](https://github.com/NightscoutFoundation/xDrip) in various Linux utils (currently only supports [Waybar](https://github.com/NightscoutFoundation/xDrip)).
+Custom module to display live blood glucose readings from [xDrip+](https://github.com/NightscoutFoundation/xDrip) in various Linux utils (currently only supports [Waybar](https://github.com/Alexays/Waybar)).
 
 Values must be written by xDrip+ to a personal InfluxDB instance ([instructions here](https://xdrip.readthedocs.io/en/latest/use/cloud/#influxdb)). This module will then continuously poll these values and print them as structured data to stdout in a format the supported utility understands (such as JSON).
 
