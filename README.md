@@ -37,3 +37,7 @@ cargo install --path .
 
 - [x] Waybar
 - [ ] Mangohud
+
+## Disclaimer
+
+Please note that this repository is provided "as is", and should be used at your own risk. The author(s) are not responsible for any potential damages that may be incurred from its use.
