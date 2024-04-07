@@ -1,8 +1,11 @@
 # xdrip-stats
 
+![screenshot](https://github.com/Samuel-Bowden/xdrip-stats/assets/91887909/8ad6b882-d679-4b3e-9624-e62e5c75aa90)
+
+
 Custom module to display live blood glucose readings from [xDrip+](https://github.com/NightscoutFoundation/xDrip) in various Linux utils (currently only supports [Waybar](https://github.com/NightscoutFoundation/xDrip)).
 
-Values must be written by xDrip+ to a personal InfluxDB instance ([instructions here](https://xdrip.readthedocs.io/en/latest/use/cloud/#influxdb)). This module will then continuously poll this data and print structured data to stdout, which is then read by the utility.
+Values must be written by xDrip+ to a personal InfluxDB instance ([instructions here](https://xdrip.readthedocs.io/en/latest/use/cloud/#influxdb)). This module will then continuously poll this data and print it as structured data to stdout, which is then read by a supported util.
 
 In my setup, I am using the [Libre 2 Direct](https://xdrip.readthedocs.io/en/latest/install/libre2/) method in xDrip+ on my phone, and then uploading the data to InfluxDB2 running on my homelab over a tailscale mesh.
 
@@ -29,3 +32,8 @@ cargo install --path .
   }
 }
 ```
+
+## Utils Supported
+
+- [x] Waybar
+- [ ] Mangohud
