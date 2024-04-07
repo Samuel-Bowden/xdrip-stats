@@ -1,0 +1,11 @@
+name: Build xdrip-stats
+run-name: Build xdrip-stats
+on: [push]
+
+jobs:
+  build:
+    runs-on: native
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: nix build -L
