@@ -1,11 +1,11 @@
 use crate::direction::Direction;
 use crate::unit::Unit;
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Local};
 use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct GlucoseReading {
-    time: DateTime<Utc>,
+    time: DateTime<Local>,
     value_mmol: f64,
     value_mgdl: f64,
     direction: Direction,
@@ -23,7 +23,7 @@ impl GlucoseReading {
         }
     }
 
-    pub fn get_time(&self) -> DateTime<Utc> {
+    pub fn get_time(&self) -> DateTime<Local> {
         self.time
     }
 }
