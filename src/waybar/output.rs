@@ -14,10 +14,10 @@ pub struct Output {
 }
 
 impl Output {
-    pub fn new(reading: &GlucoseReading, status: &Status, unit: Unit) -> Self {
+    pub fn new(reading: &GlucoseReading, status: &Status, unit: &Unit) -> Self {
         Self {
             text: Text::new(
-                reading.get_value(&unit),
+                reading.get_value(unit),
                 unit,
                 reading.get_direction(),
                 status,
@@ -27,7 +27,7 @@ impl Output {
         }
     }
 
-    pub fn error_with_no_data(msg: &'static str) -> Self {
+    pub fn error_with_no_data(msg: String) -> Self {
         Self {
             text: format!("Error {ERROR_ICON}"),
             tooltip: format!("Error: {}", msg),

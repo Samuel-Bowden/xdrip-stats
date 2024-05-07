@@ -5,13 +5,13 @@ use std::fmt::Display;
 
 pub struct Text<'a> {
     value: f64,
-    unit: Unit,
+    unit: &'a Unit,
     direction: Direction,
     status: &'a Status,
 }
 
 impl<'a> Text<'a> {
-    pub fn new(value: f64, unit: Unit, direction: Direction, status: &'a Status) -> Self {
+    pub fn new(value: f64, unit: &'a Unit, direction: Direction, status: &'a Status) -> Self {
         Self {
             value,
             unit,

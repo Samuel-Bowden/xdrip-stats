@@ -5,7 +5,7 @@ pub const ERROR_ICON: &str = "⚠";
 
 pub enum Status {
     Ok,
-    Error(&'static str),
+    Error(String),
 }
 
 impl Display for Status {

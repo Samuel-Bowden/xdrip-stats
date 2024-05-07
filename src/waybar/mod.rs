@@ -1,66 +1,40 @@
-use std::time::Duration;
-use anyhow::Result;
-use influxdb::ReadQuery;
-use tokio::time::sleep;
+use self::output::Output;
 use crate::glucose_reading::GlucoseReading;
 use crate::status::Status;
+use crate::unit::Unit;
 use crate::XdripStats;
-use self::output::Output;
+use anyhow::Result;
 
 mod output;
 mod text;
 mod tooltip;
 
-pub struct WaybarStats<'a> {
-    stats: &'a mut XdripStats,
+pub struct WaybarStats {
+    pub unit: Unit,
+    last_reading: Option<GlucoseReading>,
 }
 
-impl<'a> WaybarStats<'a> {
-    pub fn new(stats: &'a mut XdripStats) -> Self {
+impl WaybarStats {
+    pub fn new(unit: Unit) -> Self {
         Self {
-            stats,
+            unit,
+            last_reading: None,
         }
     }
+}
 
-    pub async fn run(&mut self) -> Result<()> {
-        loop {
-            self.iteration().await?;
-            sleep(Duration::from_secs(10)).await
-        }
-    }
-
-
-    async fn iteration(&mut self) -> Result<()> {
-        let query = ReadQuery::new(
-            "SELECT value_mmol, value_mgdl, direction from glucose WHERE time > now() - 5m",
-        );
-        let Ok(mut db_result) = self.stats.client.json_query(query).await else {
-            return self.error("Failed to send request to database");
-        };
-
-        let mut val = db_result.deserialize_next::<GlucoseReading>()?;
-
-        let Some(glucose) = val.series.iter_mut().find(|s| s.name == "glucose") else {
-            return self.error("No glucose reading for past 5 minutes");
-        };
-
-        let Some(reading) = glucose.values.pop() else {
-            return self.error("No glucose reading for past 5 minutes");
-        };
-
-        Output::new(&reading, &Status::Ok, self.stats.unit.clone()).print_json()?;
-        self.stats.last_reading = Some(reading);
-
+impl XdripStats for WaybarStats {
+    fn output_reading(&mut self, reading: GlucoseReading) -> Result<()> {
+        Output::new(&reading, &Status::Ok, &self.unit).print_json()?;
+        self.last_reading = Some(reading);
         Ok(())
     }
 
-    fn error(&self, msg: &'static str) -> Result<()> {
-        match &self.stats.last_reading {
-            Some(reading) => {
-                Output::new(reading, &Status::Error(msg), self.stats.unit.clone())
-                    .print_json()
-            }
-            None => Output::error_with_no_data(msg).print_json(),
+    fn output_error(&self, msg: String) -> Result<()> {
+        match &self.last_reading {
+            Some(reading) => Output::new(reading, &Status::Error(msg), &self.unit),
+            None => Output::error_with_no_data(msg),
         }
+        .print_json()
     }
 }
