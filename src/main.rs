@@ -1,5 +1,5 @@
 use std::time::Duration;
-
+use crate::error::XdripError;
 use anyhow::{anyhow, Result};
 use clap::{Parser, Subcommand};
 use influxdb::{Client, ReadQuery};
@@ -15,6 +15,7 @@ mod unit;
 mod status;
 mod waybar;
 mod mangohud;
+mod error;
 
 #[derive(Subcommand)]
 enum Commands {
@@ -36,23 +37,6 @@ struct Args {
     #[clap(short, long, default_value = "mmol")]
     unit: Unit,
 }
-
-#[derive(Debug)]
-enum XdripError {
-    RequestFailed,
-    GlucoseReadingOld
-}
-
-impl std::fmt::Display for XdripError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::RequestFailed => write!(f, "Failed to send request to database"),
-            Self::GlucoseReadingOld => write!(f, "No glucose reading for past 5 minutes"),
-        }
-    }
-}
-
-impl std::error::Error for XdripError {}
 
 trait XdripStats {
     fn output_reading(&mut self, reading: GlucoseReading) -> Result<()>;
