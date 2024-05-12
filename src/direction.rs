@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use std::fmt::Display;
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize)]
 pub enum Direction {
     Flat,
     FortyFiveUp,

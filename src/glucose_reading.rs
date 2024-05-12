@@ -12,8 +12,8 @@ pub struct GlucoseReading {
 }
 
 impl GlucoseReading {
-    pub fn get_direction(&self) -> Direction {
-        self.direction.clone()
+    pub fn get_direction(&self) -> &Direction {
+        &self.direction
     }
 
     pub fn get_value(&self, unit: &Unit) -> f64 {
